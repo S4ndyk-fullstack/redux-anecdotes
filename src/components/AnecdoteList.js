@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import anecdoteService from '../services/anecdoteService'
 import sortBy from 'lodash/sortBy'
 import { connect } from 'react-redux'
-import { createVote } from '../reducers/anecdoteReducer'
+import { createVote, init } from '../reducers/anecdoteReducer'
 import { createNotification, hideNotification } from '../reducers/notificationReducer'
 
 const AnecdoteList = (props) => {
@@ -13,6 +14,11 @@ const AnecdoteList = (props) => {
       props.hideNotification()
     }, 5000)
   }
+
+  useEffect(() => {
+    anecdoteService.getAll()
+      .then(data => props.init(data))
+  }, [])
 
   return (
     <div>
@@ -42,7 +48,8 @@ const filterAnecdotes = ({ anecdotes, filter }) => {
 const mapDispatchToProps = {
   createVote,
   createNotification,
-  hideNotification
+  hideNotification,
+  init
 }
 
 const mapStateToProps = state => {
