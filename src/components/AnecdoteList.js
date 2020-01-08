@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import anecdoteService from '../services/anecdoteService'
+import React from 'react'
 import sortBy from 'lodash/sortBy'
 import { connect } from 'react-redux'
 import { createVote, init } from '../reducers/anecdoteReducer'
@@ -8,17 +7,9 @@ import { createNotification, hideNotification } from '../reducers/notificationRe
 const AnecdoteList = (props) => {
   const vote = (anecdote) => {
     console.log('vote', anecdote.id)
-    props.createVote(anecdote.id)
-    props.createNotification(`you voted '${anecdote.content}'`)
-    setTimeout(() => {
-      props.hideNotification()
-    }, 5000)
+    props.createVote(anecdote)
+    props.createNotification(`you voted '${anecdote.content}'`, 5)
   }
-
-  useEffect(() => {
-    anecdoteService.getAll()
-      .then(data => props.init(data))
-  }, [])
 
   return (
     <div>
